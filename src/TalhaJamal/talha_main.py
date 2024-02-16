@@ -3,7 +3,7 @@
 import os
 import pandas as pd
 import numpy as np
-import functions as func
+import functions as f
 
 # Import data from files
 os.chdir('/Users/talhajamal/Desktop/Code/BigData1Project')
@@ -24,7 +24,11 @@ value_weighted_returns = data.pivot(index='date', columns='ticker', values='vwre
 equal_weighted_returns = data.pivot(index='date', columns='ticker', values='ewretd')
 tickers = prices.columns # List of Tickers
 
-weights = np.array([1 / 100 for _ in range(len(returns))])
-print("The Portfolio Returns are:", round(func.portfolio_return(weights=weights, returns=returns), 4))
-print("The Portfolio Volatility is:", round(func.portfolio_volatility(weights=weights, returns=returns), 4))
-print(weights)
+meanReturns = returns.mean()
+covMatrix = returns.cov()
+
+equalWeightedPortfolioRet, equalWeightedPortfolioVol, equalWeightedPortfolioSR = f.eqWeightPortfolioPerformance(meanReturns, covMatrix, returns)
+
+maxSRPortfolioRet, maxSRPortfolioVol, maxSRPortfolioSR = f.maxSRPortfolioPerformance(meanReturns, covMatrix)
+
+minVarPortfolioRet, minVarPortfolioVol, minVarPortfolioSR = f.minVariancePortfolioPerformance(meanReturns, covMatrix)
